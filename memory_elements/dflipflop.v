@@ -6,7 +6,8 @@ module dflipflop (
     input rst,   // Reset Flip-Flop
     output reg q // Flip-Flop Stored Data
 );
-    /* D Flip-Flop Logic */
+
+/* D Flip-Flop Logic */
     always @ (posedge clk, posedge rst) begin
         if(rst) 
         begin: reset_flip_flop

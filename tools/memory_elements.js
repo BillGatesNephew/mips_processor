@@ -39,5 +39,58 @@ function generatePredecoderTV() {
     }
 }
 
+/**
+ * Generates the test vector file for the register
+ */
+function generateRegisterTV() {
+    const tests = [
+        {
+            desc: "Initial state should be 0",
+            data_in: 0,
+            enable: 0,
+            data_out: 0    
+        },
+        {
+            desc: "Set register to 5 with enable disabled",
+            data_in: 5,
+            enable: 0,
+            data_out: 0
+        },
+        {
+            desc: "Set register to 7 with enable enabled",
+            data_in: 7,
+            enable: 1,
+            data_out: 0
+        },
+        {
+            desc:"Set register to 1000 with enable disabled",
+            data_in:1000,
+            enable:0,
+            data_out:7
+        },
+        {
+            desc:"Set register to 4534 with enable enabled",
+            data_in:4534,
+            enable:1,
+            data_out:7
+        },
+        {
+            desc:"Check previous write of 4534",
+            data_in:0,
+            enable:0,
+            data_out:4534
+        }
+    ]
+    tests.forEach((test,ind) => {
+        console.log("/* Test " + (ind + 1) + ": " + test.desc + " */");
+        console.log(
+            dec2bin(test.data_in, 32) + "_" + 
+            dec2bin(test.enable,1) + "_" +
+            dec2bin(test.data_out, 32)
+        );
+    });
+}
+
 // generateDecoderTV();
-generatePredecoderTV();
+// generatePredecoderTV();
+generateRegisterTV();

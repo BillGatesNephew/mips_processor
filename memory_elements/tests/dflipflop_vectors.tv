@@ -1,0 +1,15 @@
+// Data formatting: {data_in}_{enable}_{expected_data_out}
+/* Test 1: Initial State should be 0 */
+0_0_0
+/* Test 2: Set to 1 with enable disabled */
+1_0_0
+/* Test 3: Set to 1 with enable enabled */
+1_1_0
+/* Test 4: Ensure data is still 1 */
+1_0_1
+/* Test 5: Ensure data maintains when enable is low */
+0_0_1
+/* Test 6: Check setting back to low */
+0_1_1
+/* Test 7: Check final result data */
+0_1_0

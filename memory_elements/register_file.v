@@ -16,7 +16,7 @@ module register_file(
 /* Register File Logic */
     
     // Decode each address to the register file
-    wire [(1 << ADDRESS_WIDTH):0] decoded_read_a, decoded_read_b, decoded_write;
+    wire [(1 << ADDRESS_WIDTH)-1:0] decoded_read_a, decoded_read_b, decoded_write;
     decoder decode_a(
         .input_address(read_reg_a_addr),
         .decoded_output(decoded_read_a)
@@ -40,8 +40,7 @@ module register_file(
             assign write_to = decoded_write[register_index] ? (register_index ? 1'b1 : 1'b0) : 1'b0;
             // Create new register and assign to output if needed
             wire [REG_SIZE-1:0] data_from_register;
-            register new_register(
-                .REGISTER_SIZE(REG_SIZE),
+            register #(REG_SIZE) new_register(
                 .data_in(write_reg_data_in),
                 .clock(clock),
                 .enable(write_to),

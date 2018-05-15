@@ -1,13 +1,13 @@
 `timescale 1 ns / 100 ps
-`define MODULE_NAME "module"
-`define VECTOR_FILE "file_name.tv"
+`define MODULE_NAME "dflipflop"
+`define VECTOR_FILE "dflipflop_vectors.tv"
 module testbench_skeleton();
 
 /*********************************
  **** DEFAULT REGS AND WIRES  ****
  *********************************/
     // Number of values read in from vector .tv file
-    parameter VECTOR_SIZE = 4; 
+    parameter VECTOR_SIZE = 1 + 1 + 1; // data_in + enable + expected_data_out 
 
     /* Default Regs and Wires */
     reg                   clock, reset; 
@@ -17,8 +17,17 @@ module testbench_skeleton();
 /******************************
  **** MODULES BEING TESTED ****
  ******************************/
-    // Example:
-    // mymodule m1(a,b,c,y);
+    reg data_in, enable;
+    wire data_out;
+    reg expected_data_out;
+
+    dflipflop dut(
+        .d(data_in),
+        .clk(clock),
+        .en(enable),
+        .rst(reset),
+        .q(data_out)
+    );
 
 /**********************
  **** CLOCK SIGNAL ****
@@ -48,7 +57,7 @@ module testbench_skeleton();
         // Set signals below using concatenations
         // ie. {a,b,c,yexpected} = testvectors[vectornum]
         //
-        // {} = testvectors[vectornum];
+        {data_in, enable, expected_data_out} = testvectors[vectornum];
     end 
 
 /**************************************
@@ -58,17 +67,17 @@ module testbench_skeleton();
     begin: check_results
         if(~reset) // Skip test check when reset is asserted
         begin 
-            /* TEST GOES HERE */
-            // Example Test:
-            // if(y !== yexpected) begin
-            //    $display("Error on test %d: inputs = %b", {a,b,c});
-            //    $display(" outputs = %b (%b expected)",vectornum + 1, y,yexpected);
-            //    errors = errors + 1;
-            // end
+             /* D FLIP-FLOP TEST */
+            if(data_out !== expected_data_out) 
+            begin: check_test_result
+                $display("Error on test %d: inputs = %b", vectornum + 1, {data_in, enable});
+                $display(" outputs = %b (%b expected)", data_out, expected_data_out);
+                errors = errors + 1;
+            end 
 
             /* Updates test vector index and checks for vector */
             vectornum = vectornum + 1;
-            if(testvectors[vectornum] === 4'bx) 
+            if(testvectors[vectornum] === 3'bx) 
             begin: test_finished
                 $display("<< %d tests completed with %d errors >>", vectornum, errors);
                 $finish;

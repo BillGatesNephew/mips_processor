@@ -1,13 +1,13 @@
 `timescale 1 ns / 100 ps
-`define MODULE_NAME "module"
-`define VECTOR_FILE "file_name.tv"
+`define MODULE_NAME "decoder"
+`define VECTOR_FILE "decoder_vectors.tv"
 module testbench_skeleton();
 
 /*********************************
  **** DEFAULT REGS AND WIRES  ****
  *********************************/
     // Number of values read in from vector .tv file
-    parameter VECTOR_SIZE = 4; 
+    parameter VECTOR_SIZE = 5 + 32; // input_address + expected_decoded_output 
 
     /* Default Regs and Wires */
     reg                   clock, reset; 
@@ -17,8 +17,14 @@ module testbench_skeleton();
 /******************************
  **** MODULES BEING TESTED ****
  ******************************/
-    // Example:
-    // mymodule m1(a,b,c,y);
+    reg  [4:0]  input_address;
+    wire [31:0] decoded_output;
+    reg  [31:0] expected_decoded_output;
+
+    decoder dut(
+        .input_address(input_address),
+        .decoded_output(decoded_output)
+    );
 
 /**********************
  **** CLOCK SIGNAL ****
@@ -48,7 +54,7 @@ module testbench_skeleton();
         // Set signals below using concatenations
         // ie. {a,b,c,yexpected} = testvectors[vectornum]
         //
-        // {} = testvectors[vectornum];
+        {input_address, expected_decoded_output} = testvectors[vectornum];
     end 
 
 /**************************************
@@ -58,17 +64,17 @@ module testbench_skeleton();
     begin: check_results
         if(~reset) // Skip test check when reset is asserted
         begin 
-            /* TEST GOES HERE */
-            // Example Test:
-            // if(y !== yexpected) begin
-            //    $display("Error: inputs = %b", {a,b,c});
-            //    $display(" outputs = %b (%b expected)",y,yexpected);
-            //    errors = errors + 1;
-            // end
+            /* DECODER TEST */
+            if(decoded_output !== expected_decoded_output) 
+            begin: check_test_result
+                $display("Error: inputs = %b", {input_address});
+                $display(" outputs = %b (%b expected)", decoded_output, expected_decoded_output);
+                errors = errors + 1;
+            end 
 
             /* Updates test vector index and checks for vector */
             vectornum = vectornum + 1;
-            if(testvectors[vectornum] === 4'bx) 
+            if(testvectors[vectornum] === 37'bx) 
             begin: test_finished
                 $display("<< %d tests completed with %d errors >>", vectornum, errors);
                 $finish;

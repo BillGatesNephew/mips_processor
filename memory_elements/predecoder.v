@@ -34,10 +34,10 @@ module predecoder(
             );
             nand n3(
                 subnetwork_wires[2],
-                subnetwork_wires[0], subnetwork_wires[1]
+                ~subnetwork_wires[0], ~subnetwork_wires[1]
             );
             assign decoded_output[address_index] = ~subnetwork_wires[2];
-
+            
         end 
     endgenerate
 

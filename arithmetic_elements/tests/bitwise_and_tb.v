@@ -67,8 +67,8 @@ module testbench_skeleton();
         begin 
             /* BITWISE AND TEST */
             if(out !== expected_out) begin
-                $display("Error on test %d: inputs = %b", {input_a,input_b});
-                $display(" outputs = %b (%b expected)",vectornum + 1, out,expected_out);
+                $display("Error on test %d: inputs = %b", vectornum + 1, {input_a,input_b});
+                $display(" outputs = %b (%b expected)", out,expected_out);
                 errors = errors + 1;
             end
 

@@ -1,13 +1,13 @@
 `timescale 1 ns / 100 ps
-`define MODULE_NAME "module"
-`define VECTOR_FILE "file_name.tv"
+`define MODULE_NAME "not_equal_comparator"
+`define VECTOR_FILE "not_equal_comparator_vectors.tv"
 module testbench_skeleton();
 
 /*********************************
  **** DEFAULT REGS AND WIRES  ****
  *********************************/
     // Number of values read in from vector .tv file
-    parameter VECTOR_SIZE = 4; 
+    parameter VECTOR_SIZE = 32 + 32 + 1; // input_a + input_b + expected_result
 
     /* Default Regs and Wires */
     reg                   clock, reset; 
@@ -17,8 +17,15 @@ module testbench_skeleton();
 /******************************
  **** MODULES BEING TESTED ****
  ******************************/
-    // Example:
-    // mymodule m1(a,b,c,y);
+    reg  [31:0] input_a, input_b;
+    wire        out;
+    reg         expected_out;
+
+    not_equal_comparator dut(
+        .input_a(input_a),
+        .input_b(input_b),
+        .inputs_not_equal(out)
+    );
 
 /**********************
  **** CLOCK SIGNAL ****
@@ -48,7 +55,7 @@ module testbench_skeleton();
         // Set signals below using concatenations
         // ie. {a,b,c,yexpected} = testvectors[vectornum]
         //
-        // {} = testvectors[vectornum];
+        {input_a, input_b, expected_out} = testvectors[vectornum];
     end 
 
 /**************************************
@@ -58,17 +65,16 @@ module testbench_skeleton();
     begin: check_results
         if(~reset) // Skip test check when reset is asserted
         begin 
-            /* TEST GOES HERE */
-            // Example Test:
-            // if(y !== yexpected) begin
-            //    $display("Error on test %d: inputs = %b",vectornum + 1, {a,b,c});
-            //    $display(" outputs = %b (%b expected)", y,yexpected);
-            //    errors = errors + 1;
-            // end
+            /* NOT EQUAL COMPARATOR TEST */
+            if(out !== expected_out) begin
+                $display("Error on test %d: inputs = %b", vectornum + 1, {input_a,input_b});
+                $display(" outputs = %b (%b expected)", out,expected_out);
+                errors = errors + 1;
+            end
 
             /* Updates test vector index and checks for vector */
             vectornum = vectornum + 1;
-            if(testvectors[vectornum] === 4'bx) 
+            if(testvectors[vectornum] === 65'bx) 
             begin: test_finished
                 $display("<< %d tests completed with %d errors >>", vectornum, errors);
                 $finish;

@@ -87,3 +87,29 @@ A module that performs the bitwise OR operation, commonly seen as "|" in program
 **Dependencies:**
 - No dependencies
 
+### Not Equal Comparator
+----------
+**File Name:** not_equal_comparator.v
+
+**Module Declaration:**
+```verilog
+    /**
+     * input_a [31:0]   - Input  - First input 
+     * input_b [31:0]   - Input  - Second input
+     * inputs_not_equal - Output - Flag that is 1 if inputs are not equal and 0 otherwise
+     */
+    not_equal_comparator comparator(input_a, input_b, inputs_not_equal);
+```
+
+**Description:**
+
+A simple comparator that tests for equality between two separate inputs. If the two inputs are not equal, then the output is set to **1'b1**.
+
+**Specifications:**
+- Inputs are each **32-bits**
+- Output flag is **set** when the inputs **are not** equal
+
+**Dependencies:**
+- No dependencies
+
+

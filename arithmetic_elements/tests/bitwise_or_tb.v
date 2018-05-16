@@ -1,6 +1,6 @@
 `timescale 1 ns / 100 ps
-`define MODULE_NAME "bitwise_and"
-`define VECTOR_FILE "bitwise_and_vectors.tv"
+`define MODULE_NAME "bitwise_or"
+`define VECTOR_FILE "bitwise_or_vectors.tv"
 module testbench_skeleton();
 
 /*********************************
@@ -21,7 +21,7 @@ module testbench_skeleton();
     wire [31:0] out;
     reg  [31:0] expected_out;
 
-    bitwise_and dut(
+    bitwise_or dut(
         .input_a(input_a),
         .input_b(input_b),
         .out(out)
@@ -65,7 +65,7 @@ module testbench_skeleton();
     begin: check_results
         if(~reset) // Skip test check when reset is asserted
         begin 
-            /* BITWISE AND TEST */
+            /* BITWISE OR Test */
             if(out !== expected_out) begin
                 $display("Error on test %d: inputs = %b", {input_a,input_b});
                 $display(" outputs = %b (%b expected)",vectornum + 1, out,expected_out);

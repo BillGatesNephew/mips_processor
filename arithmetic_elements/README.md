@@ -39,6 +39,30 @@ A simple arithmetic right shifter for 32-bit inputs.
 - No dependencies
 
 
+### Bitwise AND
+----------
+**File Name:** bitwise_and.v
+
+**Module Declaration:**
+```verilog
+    /**
+     * input_a [31:0] - Input  - First input 
+     * input_b [31:0] - Input  - Second input
+     * out     [31:0] - Output - The value resulting from the AND of every bit in the inputs
+     */
+    bitwise_and and_unit(input_a, input_b, out);
+```
+
+**Description:**
+
+A module that performs the bitwise AND operation, commonly seen as "&" in programming languages, on two different inputs.
+
+**Specifications:**
+- Inputs are each **32-bits**
+
+**Dependencies:**
+- No dependencies
+
 ### Bitwise OR
 ----------
 **File Name:** bitwise_or.v
@@ -48,17 +72,18 @@ A simple arithmetic right shifter for 32-bit inputs.
     /**
      * input_a [31:0] - Input  - First input 
      * input_b [31:0] - Input  - Second input
-     * out     [31:0] - Output - The value resulting from the AND of every bit in the inputs
+     * out     [31:0] - Output - The value resulting from the OR of every bit in the inputs
      */
     bitwise_or or_unit(input_a, input_b, out);
 ```
 
 **Description:**
 
-A module that performs the bitwise and operation, commonly seen as "&" in programming languages, on two different inputs.
+A module that performs the bitwise OR operation, commonly seen as "|" in programming languages, on two different inputs.
 
 **Specifications:**
 - Inputs are each **32-bits**
 
 **Dependencies:**
 - No dependencies
+
